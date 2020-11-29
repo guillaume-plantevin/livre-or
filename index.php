@@ -13,7 +13,8 @@
             <?php require_once('templates/nav-bar.php');?>
         </header>
         <main>
-            <p>Hello World</p>
+            <h1>Livre d'or du mariage de Sarah & Mathias</h1>
+            <h3>Bienvenue!</h3>
             <p>Accueil</p>
 
         </main>

@@ -22,3 +22,11 @@ label {
     margin-bottom: 2em;
     /* background: red; */
 }
+#submitButton {
+    margin-left: 15.3em;
+}
+.note {
+    font-style: italic;
+    font-size: small;
+    font-weight: 300;
+}

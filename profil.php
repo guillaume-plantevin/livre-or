@@ -1,7 +1,17 @@
 <?php
+    session_start();
+
+    require_once('pdo.php');
     require_once('functions/functions.php');
+
+    controlData($_SESSION, '$_SESSION');
     $title = 'Profil';
-    $visible = true;
+    if ($_SESSION['logged'])
+        $visible = false;
+    else
+        $visible = true;
+
+    
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +22,17 @@
             <?php require_once('templates/nav-bar.php');?>
         </header>
         <main>
-            <p>Hello World</p>
+            <h1>Page de Profil</h1>
+            <p>Ici, vous pouvez changer votre identifiant et/ou votre mot de passe:</p>
+            <form action="" method="post">
+                <label for="login">Login:</label>
+                <input type="text" name="login" id="login" value=<?=$_SESSION['login'];?>><br />
+                
+                <label for="password">Mot de passe:</label>
+                <input type="password" name="password" id="password" value=<?=$_SESSION['password'];?>><br />
+
+                <input type="submit" id="submitButton" value="Valider">
+            </form>
 
 
         </main>

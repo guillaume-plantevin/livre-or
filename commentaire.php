@@ -1,7 +1,15 @@
 <?php
+    session_start();
+
+    require_once('pdo.php');
     require_once('functions/functions.php');
-    $title = 'Commentaires';
-    $visible = true;
+
+    $title = 'Commentaire';
+    if ($_SESSION['logged'])
+        $visible = false;
+    else
+        $visible = true;
+    $errorMsg = 'Vous devez etre connecter pour pouvoir rajouter un commentaire'
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +20,9 @@
             <?php require_once('templates/nav-bar.php');?>
         </header>
         <main>
-            <p>Hello World</p>
+            <h1>Commentaires</h1>
+            <p>Si vous voulez rajouter un commentaire, si vous suffit de l'écrire et de le valider:</p>
+            <p class="note">Note: vous pouvez en rajouter autant que vous le souhaitez.</p>
 
 
         </main>

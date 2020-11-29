@@ -1,7 +1,14 @@
 <?php
+    session_start();
+
+    require_once('pdo.php');
     require_once('functions/functions.php');
+
     $title = 'Livre d\'Or';
-    $visible = true;
+    if ($_SESSION['logged'])
+        $visible = false;
+    else
+        $visible = true;
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +19,8 @@
             <?php require_once('templates/nav-bar.php');?>
         </header>
         <main>
-            <p>Hello World</p>
+            <h1>Livre d'Or</h1>
+            <p>Tous les derniers commentaires</p>
 
 
         </main>

@@ -7,8 +7,8 @@
             echo '<li><a href="connexion.php">Connexion</a></li>';
             endif
         ?>
-        <li><a href="profil.php">Profil</a></li>
-        <li><a href="livre-or.php">Livre d'Or</a></li>
-        <li><a href="commentaire.php">Commentaires</a></li>
+        <li><a href="profil.php">Votre profil</a></li>
+        <li><a href="livre-or.php">Le livre d'or</a></li>
+        <li><a href="commentaire.php">Rajouter un commentaire</a></li>
     </ul>
 </nav>
