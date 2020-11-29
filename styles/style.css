@@ -1,0 +1,32 @@
+nav {
+    /* height: 5em; */
+    background: rgb(255, 197, 146);
+    display: flex;
+}
+nav li {
+    display: inline-block;
+    margin-left: 2em;
+}
+nav h1 {
+    margin: 1em 3em;
+}
+nav ul {
+    margin-top: 3.7em;
+}
+
+
+label {
+    display: inline-block;
+    text-align: right;
+    width: 15em;
+    margin-bottom: 2em;
+    /* background: red; */
+}
+#submitButton {
+    margin-left: 15.3em;
+}
+.note {
+    font-style: italic;
+    font-size: small;
+    font-weight: 300;
+}
