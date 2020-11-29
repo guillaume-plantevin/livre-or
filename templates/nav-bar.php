@@ -1,4 +1,5 @@
 <nav>
+    <h1>Livre d'Or</h1>
     <ul>
         <li><a href="index.php">Accueil</a></li>
         <?php if ($visible):
