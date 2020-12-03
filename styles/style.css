@@ -9,6 +9,7 @@ nav li {
 }
 nav h1 {
     margin: 1em 3em;
+    text-transform: uppercase;
 }
 nav ul {
     margin-top: 3.7em;

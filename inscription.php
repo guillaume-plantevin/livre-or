@@ -1,6 +1,9 @@
 <?php
     require_once('pdo.php');
     require_once('functions/functions.php');
+    // Si on vient d'une des pages
+    if ( !isset($_POST)) 
+        unset($_SESSION);
 
     if ( isset($_POST['submit']) ) {
         // les deux mdp sont similaires
@@ -17,12 +20,13 @@
 
             // le login est déjà enregistré dans la DB
             if ( $_POST['login'] === $row['login'] ) {
-                $errorMsg = "Attention: Le login existe déjà. Veuillez en choisir un autre.";
+                $errorMsg = "Attention: Le login existe déjà. Merci d'en choisir un autre.";
             }
-            // nouveau login => rajout d'un utilisateur
+            // nouveau login => nouvel utilisateur
             else {
                 $sql = "INSERT INTO utilisateurs (login, password) VALUES (:login, :password)";
                 
+                // DEBUG
                 echo("<pre>\n" . $sql . "\n</pre>\n");
     
                 // sanitizing input query
@@ -31,6 +35,7 @@
                 $stmt->execute( array(
                     ':login' => $_POST['login'], 
                     ':password' => $_POST['password']));
+                // GOTO connexion.php
                 header('location: connexion.php');
             }
         }
