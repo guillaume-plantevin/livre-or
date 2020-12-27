@@ -4,7 +4,7 @@
     $visible = true;
 
 ?>
-
+<!-- ===============  VIEW  ================== -->
 <!DOCTYPE html>
 <html lang="fr">
     <?php require_once('templates/head.php');?>

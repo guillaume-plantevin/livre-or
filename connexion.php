@@ -7,7 +7,7 @@
     // IF form send
     if (isset($_POST['submit'])) {
         // IF login & password set
-        if ( isset($_POST['login']) && isset($_POST['password'])  ) {
+        if ( isset($_POST['login']) && isset($_POST['password']) ) {
 
             $sql = "SELECT id, login, password FROM utilisateurs WHERE login = :log AND password = :pw";
 
@@ -20,7 +20,7 @@
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if (isset($row))
-                controlData($row, '$row');
+                print_r_pre($row, '$row');
 
             if ( !$row )
                 $errorMsg = 'Votre compte n\'existe pas ou vous avez fait une erreur dans la saisie de vos identifiants.';
@@ -36,9 +36,9 @@
         }
     }
     if (isset($_SESSION))
-        controlData($_SESSION, '$_SESSION');
+        print_r_pre($_SESSION, '$_SESSION');
     if (isset($row))
-        controlData($row, '$row');
+        print_r_pre($row, '$row');
 
     $title = 'Connexion';
     $visible = true;
