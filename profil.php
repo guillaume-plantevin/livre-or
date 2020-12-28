@@ -4,7 +4,7 @@
     require_once('pdo.php');
     require_once('functions/functions.php');
 
-    controlData($_SESSION, '$_SESSION');
+    // print_r_pre($_SESSION, '$_SESSION');
     $title = 'Profil';
 
     // IF form send
@@ -24,7 +24,7 @@
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if (isset($row))
-                controlData($row, '$row');
+                print_r_pre($row, '$row');
 
             if ( !$row )
                 $errorMsg = 'Votre compte n\'existe pas ou vous avez fait une erreur dans la saisie de vos identifiants.';
@@ -40,9 +40,9 @@
         }
     }
     if (isset($_SESSION))
-        controlData($_SESSION, '$_SESSION');
+        // print_r_pre($_SESSION, '$_SESSION');
     if (isset($row))
-        controlData($row, '$row');
+        print_r_pre($row, '$row');
 
     $title = 'Connexion';
     $visible = true;
@@ -66,10 +66,10 @@
             <p>Ici, vous pouvez changer votre identifiant - s'il est disponible - et/ou votre mot de passe:</p>
             <form action="" method="post">
                 <label for="login">Login:</label>
-                <input type="text" name="login" id="login" value=<?=$_SESSION['login'];?>><br />
+                <input type="text" name="login" id="login" value=<?=$_SESSION['login'];?>> <br />
                 
                 <label for="password">Mot de passe:</label>
-                <input type="password" name="password" id="password" value=<?=$_SESSION['password'];?>><br />
+                <input type="password" name="password" id="password" value=<?=$_SESSION['password'];?>> <br />
 
                 <input type="submit" id="submitButton" value="Valider">
             </form>

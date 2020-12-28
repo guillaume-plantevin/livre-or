@@ -18,7 +18,7 @@
         <header>
             <?php require_once('templates/nav-bar.php');?>
         </header>
-        <main>
+        <main class='container'>
             <h1>Livre d'Or</h1>
             <p>Tous les derniers commentaires</p>
 

@@ -19,7 +19,7 @@
         <header>
             <?php require_once('templates/nav-bar.php');?>
         </header>
-        <main>
+        <main class='container'>
             <h1>Commentaires</h1>
             <p>Si vous voulez rajouter un commentaire, si vous suffit de l'écrire et de le valider:</p>
             <p class="note">Note: vous pouvez en rajouter autant que vous le souhaitez.</p>
