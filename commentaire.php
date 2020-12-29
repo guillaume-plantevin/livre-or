@@ -24,13 +24,17 @@
             // sanitizing input query
             $stmt = $pdo->prepare($sql);
 
+
+            // PAS FINI!!!!
             $stmt->execute([
                 ':commentaire' => htmlentities($_POST['comm']), 
                 ':id_utilisateur' => $_SESSION['id'],
                 ':date' => //TODO
             ]);
 
-            $_SESSION['success'] = 'Votre profil a été créé avec succès!';
+            $_SESSION['success'] = 'Votre a été rajouté avec succès!';
+            header('Location: commentaire.php');
+            return;
         }
     }
     /*
@@ -65,6 +69,12 @@
                 if (isset($_SESSION['error'])) {
                     echo '<p class="error">' . $_SESSION['error'] . '</p>';
                     unset($_SESSION['error']);
+                }
+                elseif ( isset($_SESSION['success']) ) 
+                {
+                    echo '<p class="success">' . $_SESSION['success'] . '</p>';
+                    unset($_SESSION['success']);
+                    // echo '<p>Retourner sur <a href="connexion.php">connexion</a></p>';
                 }
             ?>
             <form action="" method="POST">
