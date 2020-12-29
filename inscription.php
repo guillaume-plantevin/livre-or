@@ -73,6 +73,8 @@
                     ':login' => htmlentities($_POST['login']), 
                     ':password' => password_hash( htmlentities( $_POST['password']), PASSWORD_DEFAULT)
                 ]);
+
+                $_SESSION['success'] = 'Votre profil a été créé avec succès!';
                 // GOTO
                 header('Location: connexion.php');
                 return;

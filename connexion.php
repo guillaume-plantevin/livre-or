@@ -59,6 +59,8 @@
                 }
                 // BOOL LOGGED
                 $_SESSION['logged'] = TRUE;
+                // CHARGING PASSWORD, NOT THE HASH
+                $_SESSION['password'] = htmlentities($_POST['password']);
 
                 // GOTO
                 header('location: profil.php');
@@ -86,6 +88,12 @@
         <main class='container'>
             <h1>Connexion</h1>
             <?php 
+                if ( isset($_SESSION['success']) ) 
+                {
+                    echo '<p class="success">' . $_SESSION['success'] . '</p>';
+                    unset($_SESSION['success']);
+                    // echo '<p>Retourner sur <a href="connexion.php">connexion</a></p>';
+                }
                 if ( isset($_SESSION['error']) ) 
                 {
                     echo '<p class="error">' . $_SESSION['error'] . '</p>';

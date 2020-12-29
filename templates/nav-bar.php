@@ -13,6 +13,10 @@
         ?>
         <li><a href="profil.php">Votre profil</a></li>
         <li><a href="livre-or.php">Le livre d'or</a></li>
-        <li><a href="commentaire.php">Rajouter un commentaire</a></li>
+        <?php 
+            if (isset($_SESSION['logged']) && $_SESSION['logged']) {
+                echo '<li><a href="commentaire.php">Rajouter un commentaire</a></li>';
+            }
+        ?>
     </ul>
 </nav>

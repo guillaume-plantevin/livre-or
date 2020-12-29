@@ -5,10 +5,10 @@
     require_once('functions/functions.php');
 
     $title = 'Livre d\'Or';
-    if ($_SESSION['logged'])
-        $visible = false;
-    else
-        $visible = true;
+    // if ($_SESSION['logged'])
+    //     $visible = false;
+    // else
+    //     $visible = true;
 ?>
 
 <!DOCTYPE html>
