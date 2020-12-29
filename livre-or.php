@@ -5,10 +5,10 @@
     require_once('functions/functions.php');
 
     $title = 'Livre d\'Or';
-    if ($_SESSION['logged'])
-        $visible = false;
-    else
-        $visible = true;
+    // if ($_SESSION['logged'])
+    //     $visible = false;
+    // else
+    //     $visible = true;
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +18,7 @@
         <header>
             <?php require_once('templates/nav-bar.php');?>
         </header>
-        <main>
+        <main class='container'>
             <h1>Livre d'Or</h1>
             <p>Tous les derniers commentaires</p>
 

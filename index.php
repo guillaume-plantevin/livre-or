@@ -1,10 +1,14 @@
 <?php
+    // session_start();
+    // session_destroy();
+    // ABOVE: might be DEBUG
+
     require_once('functions/functions.php');
     $title = 'Livre d\'Or: Acceuil';
-    $visible = true;
+    // $visible = true;
 
 ?>
-
+<!-- ===============  VIEW  ================== -->
 <!DOCTYPE html>
 <html lang="fr">
     <?php require_once('templates/head.php');?>
@@ -12,11 +16,10 @@
         <header>
             <?php require_once('templates/nav-bar.php');?>
         </header>
-        <main>
+        <main class='container'>
             <h1>Livre d'or du mariage de Sarah & Mathias</h1>
             <h3>Bienvenue!</h3>
-            <p>Accueil</p>
-
+            <p>Des trucs et des bidules</p>
         </main>
         <?php require_once('templates/footer.php');?>
     </body>
