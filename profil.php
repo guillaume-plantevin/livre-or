@@ -10,10 +10,10 @@
     print_r_pre($_SESSION, '$_SESSION:');
     print_r_pre($_POST, '$_POST:');
 
-    var_dump_pre($_POST['login'], '$_POST[login]: ');
-    var_dump_pre(trim($_POST['login']), 'trim($_POST[login]): ');
-    var_dump_pre($_SESSION['login'], '$_SESSION[login]: ');
-    var_dump_pre(trim($_SESSION['login']), 'trim($_SESSION[login]): ');
+    // var_dump_pre($_POST['login'], '$_POST[login]: ');
+    // var_dump_pre(trim($_POST['login']), 'trim($_POST[login]): ');
+    // var_dump_pre($_SESSION['login'], '$_SESSION[login]: ');
+    // var_dump_pre(trim($_SESSION['login']), 'trim($_SESSION[login]): ');
 
     // IF form send
     if (isset($_POST['submit'])) {
@@ -91,14 +91,14 @@
         <header>
             <?php require_once('templates/nav-bar.php');?>
         </header>
-        <main>
+        <main class="container">
             <?php
                 if (isset($_SESSION['error'])) {
                     echo '<p class="error">' . $_SESSION['error'] . '</p>';
                     unset($_SESSION['error']);
                 }
-                if (isset($_SESSION['logged']) && !$_SESSION['logged']) :
-                    echo 'visible uniquement lorsque vous vous serez connecté';
+                if (!isset($_SESSION['logged']) || !$_SESSION['logged']) :
+                    echo '<p class="error">Cette partie du site où vous pourrez modifier vos informations, ne sera visible qu\'une fois connecté</p>';
                 else :
             ?>
                     <h1>Page de Profil</h1>

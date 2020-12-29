@@ -45,3 +45,9 @@ label {
     border-radius: 10px;
     color: white;
 }
+.button {
+    margin: 1em;
+}
+.block {
+    display: block;
+}
