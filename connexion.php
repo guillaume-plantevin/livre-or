@@ -9,49 +9,60 @@
         header("Location: index.php");
         return;
     }
-    // IF form send
+    // DEBUG
+    print_r_pre($_POST, '$_POST');
+
+    // FORM POST SEND
     if (isset($_POST['submit'])) {
-        // IF login & password set
+        // DEBUG
+        // print_r_pre($_POST, '$_POST');
+
+        if (empty($_POST['login'])) {
+            // if (verifyLength($_POST['login'], $maxLength))
+            $_SESSION['error'] = 'Vous devez rentrer votre login pour vous connecter.';
+            header('Location: connexion.php');
+            return;
+        }
+        // NO PASSWORD
+        elseif (empty($_POST['password'])) {
+            $_SESSION['error'] = 'Vous devez rentrer votre mot de passe pour vous connecter.';
+            header('Location: connexion.php');
+            return;
+        }
         if ( isset($_POST['login']) && isset($_POST['password']) ) {
 
-            $sql = "SELECT * FROM utilisateurs WHERE login = :log";
+            $sql = "SELECT * FROM utilisateurs WHERE login = :login";
 
             $stmt = $pdo->prepare($sql);
 
-            // $stmt->execute([':log' => $_POST['login'], 
-            //     ':pw' => $_POST['password']
-            // ]);
-            $stmt->execute([':log' => $_POST['login']]);
+            $stmt->execute([':login' => $_POST['login']]);
             
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            // synthaxe merdique , à revoir
-            if (isset($row)) {
-                // DEBUG
-                print_r_pre($row, '$row');
 
-                if (!password_verify($_POST['password'], $row['password'])) {
-                    $_SESSION['error'] = 'Votre mot de passe n\'est pas similaire à celui enregistré.';
-                    header('Location: connexion.php');
-                    return;
-                }
-            }
-            elseif ( !$row ) {
-                $_SESSION['error'] = 'Votre compte n\'existe pas ou vous avez fait une erreur dans la saisie de votre identifiant.';
+            // DEBUG
+            print_r_pre($row, '$row');
+
+            if (empty($row)) {
+                $_SESSION['error'] = 'Ce Login n\'existe pas dans notre base de donnée.';
                 header('Location: connexion.php');
                 return;
             }
             else { 
+                if (!password_verify($_POST['password'], $row['password'])) {
+                    $_SESSION['error'] = 'Votre mot de passe n\'est pas similaire à celui enregistré lors de votre inscription.';
+                    header('Location: connexion.php');
+                    return;
+                }
                 // faire le tour des infos de l'utilisateur dans la DB et les copier dans $_SESSION
                 foreach($row as $k => $v) {
                     $_SESSION[$k] = $v;
                 }
-                // creer une variable pour savoir si un utilisateur est logged-in
+                // BOOL LOGGED
                 $_SESSION['logged'] = TRUE;
 
-                header('Location: connexion.php');
+                // GOTO
+                header('location: profil.php');
                 return;
-                // header('location: profil.php');
             }
         }
     }
@@ -75,14 +86,12 @@
         <main class='container'>
             <h1>Connexion</h1>
             <?php 
-                if (isset($_SESSION['error'])) {
+                if ( isset($_SESSION['error']) ) 
+                {
                     echo '<p class="error">' . $_SESSION['error'] . '</p>';
                     unset($_SESSION['error']);
-                    echo '<p>Retourner sur <a href="connexion.php">connexion</a></p>';
+                    // echo '<p>Retourner sur <a href="connexion.php">connexion</a></p>';
                 }
-            ?>
-            <?php
-                else {
             ?>
                     <p>Pour vous connecter, il vous suffit de rentrer votre identifiant et votre mot de passe:</p>
                     <form action="" method="post">
@@ -95,9 +104,6 @@
                         <input type="submit" id="submitButton" name="submit" value="Valider" />
                         <input type='submit' name='cancel' value='annuler' />
                     </form>
-            <?php
-                }
-            ?>
         </main>
         <?php require_once('templates/footer.php');?>
     </body>

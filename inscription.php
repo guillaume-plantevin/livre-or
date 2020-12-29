@@ -4,82 +4,83 @@
     require_once('pdo.php');
     require_once('functions/functions.php');
 
-    if (isset($_POST['cancel'])) {
-        // Redirect the browser to deconnexion.php who destroy the session and redirect to index.php
-        header("Location: deconnexion.php");
-        return;
-    }
+    // $maxLength = 255;
+
     // DEBUG
-    // $_SESSION['error'] = "Connerie de merde.";
-    print_r_pre($_SESSION, '$_SESSION');
-    
-    if ( isset($_POST['submit']) ) {
+    var_dump_pre($_POST, '$_POST');
+
+    // CANCEL -> goto deco, init $_SESSION
+    if (isset($_POST['cancel'])) {
+        header('Location: deconnexion.php');
+    }
+
+    if (isset($_POST['submit']))  {
+        // NO LOGIN
         if (empty($_POST['login'])) {
-            $_SESSION['error'] = "Attention: Vous devez rentrer un login pour vous inscrire.";
-            header('location: inscription.php');
+            // if (verifyLength($_POST['login'], $maxLength))
+            $_SESSION['error'] = 'Vous devez choisir un login.';
+            header('Location: inscription.php');
             return;
         }
+        // NO PASSWORD
         elseif (empty($_POST['password'])) {
-            $_SESSION['error'] = "Attention: Vous devez rentrer un mot de passe pour vous inscrire.";
-            header('location: inscription.php');
+            $_SESSION['error'] = 'Vous devez choisir un mot de passe.';
+            header('Location: inscription.php');
             return;
         }
+        // NO PASSWORD CONFIRM
         elseif (empty($_POST['passwordConfirm'])) {
-            $_SESSION['error'] = "Attention: Vous devez rentrer une deuxième fois votre mot de passe pour vous inscrire.";
-            header('location: inscription.php');
+            $_SESSION['error'] = 'Vous devez répéter votre mot de passe.';
+            header('Location: inscription.php');
             return;
         }
-        else if ($_POST['password'] !== $_POST['passwordConfirm']) {
-            $_SESSION['error'] = "Attention: vous devez répéter le même mot de passe dans la case \"confirmation\".";
-            header('location: inscription.php');
+        // DIFFERENT PASS & CONFIRM
+        elseif ($_POST['password'] !== $_POST['passwordConfirm']) {
+            $_SESSION['error'] = 'Votre mot de passe et sa confirmation ne sont pas similaires.';
+            header('Location: inscription.php');
             return;
         }
+        // EVERYTHING'S  OK
         else {
-            // Vérifier si le login existe déjà
-            $sql = "SELECT login FROM utilisateurs WHERE login = :login";
-
+            $qry = "SELECT * FROM utilisateurs WHERE login = :login";
             // DEBUG query
-            echo "<p>$sql</p>\n";
+            echo "<p>$qry</p>";
 
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([':login' => $_POST['login']]);
+            $stmt = $pdo->prepare($qry);
+            $stmt->execute( array( ':login' => htmlentities( $_POST['login'] ) ) );
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // login already in DB
-            if ( $_POST['login'] === $row['login'] ) {
-                $_SESSION['error'] = "Attention: Le login existe déjà. Merci d'en choisir un autre.";
+            // DEBUG
+            print_r_pre($row, '$row');
+
+            // LOGIN ALREADY EXISTS
+            if (!empty($row)) {
+                $_SESSION['error'] = 'Votre login est déjà utilisé, Veuillez en choisir un autre.';
                 header('Location: inscription.php');
+                return;
             }
-            // new login => nouvel user
+            // INSERT INTO DB
             else {
-                echo '<p>tout c\'est bien passé et normalement un nouvel utilisateur est ajoutee à la DB</p>';
-                $sql = "INSERT INTO utilisateurs (login, password) VALUES (:login, :password)";
+                $rgt = "INSERT INTO utilisateurs (login, password) VALUES (:login, :password)";
                 
                 // DEBUG
-                print_r_pre($sql, '$sql');
+                echo "<pre>\n" . $rgt . "</pre>";
     
                 // sanitizing input query
-                $stmt = $pdo->prepare($sql);
+                $stmt = $pdo->prepare($rgt);
     
                 $stmt->execute([
                     ':login' => htmlentities($_POST['login']), 
-                    ':password' => password_hash($_POST['password'], PASSWORD_DEFAULT)
+                    ':password' => password_hash( htmlentities( $_POST['password']), PASSWORD_DEFAULT)
                 ]);
-                // $_SESSION['login'] = $_POST['login'];
-                // $_SESSION['password'] = $_POST['password'];
-                // $_SESSION['passwordConfirm'] = $_POST['passwordConfirm'];
-
-                // GOTO connexion.php
-                header('location: connexion.php');
+                // GOTO
+                header('Location: connexion.php');
+                return;
             }
         }
     }
-    // DEBUG
-    $stmt = $pdo->query("SELECT * FROM utilisateurs");
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
     $title = 'Inscription';
-    $visible = true;
+    // $visible = true;
 ?>
 
 <!DOCTYPE html>
@@ -114,8 +115,10 @@
             </form>
             <?php 
                 // DEBUG
-                print_r_pre($rows, 'in DB: users');
-                print_r_pre($_SESSION, '$_SESSION:<br>');
+                if (isset($rows))
+                    print_r_pre($rows, 'in DB: users');
+                if ($_SESSION)
+                    print_r_pre($_SESSION, '$_SESSION:<br>');
             ?>
 
         </main>

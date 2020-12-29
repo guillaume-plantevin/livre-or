@@ -5,7 +5,7 @@
 
     require_once('functions/functions.php');
     $title = 'Livre d\'Or: Acceuil';
-    $visible = true;
+    // $visible = true;
 
 ?>
 <!-- ===============  VIEW  ================== -->

@@ -11,6 +11,13 @@
         var_dump($array);
         echo '</pre>';
     }
+    function verifyLength($input, $maxLength) {
+        if (strlen($input) > $maxLength) {
+            return FALSE;
+        }
+        else
+            return TRUE;
+    }
     // trop complique => A SUPPRIMER OU CORRIGER
     function verifyingPassConfInSession($pass, $passConf) {
         if (empty($pass)) {
