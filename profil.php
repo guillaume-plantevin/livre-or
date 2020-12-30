@@ -10,78 +10,49 @@
     print_r_pre($_SESSION, '$_SESSION:');
     print_r_pre($_POST, '$_POST:');
 
-    // var_dump_pre($_POST['login'], '$_POST[login]: ');
-    // var_dump_pre(trim($_POST['login']), 'trim($_POST[login]): ');
-    // var_dump_pre($_SESSION['login'], '$_SESSION[login]: ');
-    // var_dump_pre(trim($_SESSION['login']), 'trim($_SESSION[login]): ');
-
     // IF form send
     if (isset($_POST['submit'])) {
-        // IF login & password set
-        // if ( isset($_POST['login']) && isset($_POST['password'])  ) {
-            var_dump_pre($_POST['login'], '$_POST[login]');
-            var_dump_pre($_SESSION['login'], '$_SESSION[login]');
+        // VERIFYING AVAILABILITY OF NEW LOGIN
+        if ($_POST['login'] !== $_SESSION['login']) {
+            $verify = "SELECT * FROM utilisateurs WHERE login = :login";
+            $stmt = $pdo->prepare($verify);
+            $stmt->execute([':login' => htmlentities($_POST['login'])]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // VERIFYING AVAILABILITY OF NEW LOGIN
-            if ($_POST['login'] !== $_SESSION['login']) {
-                // DEBUG
-                echo 'different loggin';
-
-                $verify = "SELECT * FROM utilisateurs WHERE login = :login";
-                $stmt = $pdo->prepare($verify);
-                $stmt->execute([':login' => htmlentities($_POST['login'])]);
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-                if (!empty($row)) {
-                    if ($_SESSION['id'] !== $row['id']) {
-                        $_SESSION['error'] = 'Votre nouveau login est déjà utilisée, veuillez en choisir un autre.';
-                        header('Location: profil.php');
-                        return;
-                    }
+            if (!empty($row)) {
+                if ($_SESSION['id'] !== $row['id']) {
+                    $_SESSION['error'] = 'Votre nouveau login est déjà utilisée, veuillez en choisir un autre.';
+                    header('Location: profil.php');
+                    return;
                 }
             }
-            // OK => UPDATE PROFIL
-            else {
-                $sql = "UPDATE utilisateurs SET login = ?, password = ? WHERE utilisateurs.id = :id";
-    
-                $stmt = $pdo->prepare($sql);
-    
-                $stmt->execute(array(
-                    ':log' => htmlentities($_POST['login']), 
-                    ':pw' => htmlentities($_POST['password']),
-                    ':id' => $_SESSION['id']));
-                
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        // OK => UPDATE PROFIL
+        else {
+            $sql = "UPDATE utilisateurs SET login = ?, password = ? WHERE utilisateurs.id = :id";
 
-            }
-            if (isset($row))
-                // DEBUG
-                print_r_pre($row, '$row:');
+            $stmt = $pdo->prepare($sql);
 
-            if ( !$row )
-                $_SESSION['error'] = 'Votre compte n\'existe pas ou vous avez fait une erreur dans la saisie de vos identifiants.';
-            else { 
-                // faire le tour des infos de l'utilisateur dans la DB et les copier dans $_SESSION
-                foreach($row as $k=>$v) {
-                    $_SESSION[$k] = $v;
-                }
-                // creer une variable pour savoir si un utilisateur est logged-in
-                $_SESSION['logged'] = true;
-                header('location: profil.php');
+            $stmt->execute(array(
+                ':log' => htmlentities($_POST['login']), 
+                ':pw' => htmlentities($_POST['password']),
+                ':id' => $_SESSION['id']));
+            
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        // ERROR
+        if ( !$row )
+            $_SESSION['error'] = 'Votre compte n\'existe pas ou vous avez fait une erreur dans la saisie de vos identifiants.';
+        else { 
+            // faire le tour des infos de l'utilisateur dans la DB et les copier dans $_SESSION
+            foreach($row as $k=>$v) {
+                $_SESSION[$k] = $v;
             }
-        // }
+            // creer une variable pour savoir si un utilisateur est logged-in
+            $_SESSION['logged'] = true;
+            header('location: profil.php');
+        }
     }
-    // if (isset($_SESSION))
-        // print_r_pre($_SESSION, '$_SESSION');
-    // if (isset($row))
-    //     print_r_pre($row, '$row');
-
-    $title = 'Connexion';
-    // $visible = true;
-    // if ($_SESSION['logged'])
-    //     $visible = false;
-    // else
-    //     $visible = true;
 ?>
 
 <!DOCTYPE html>

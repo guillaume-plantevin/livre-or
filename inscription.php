@@ -4,12 +4,10 @@
     require_once('pdo.php');
     require_once('functions/functions.php');
 
-    // $maxLength = 255;
-
     // DEBUG
-    var_dump_pre($_POST, '$_POST');
+    // var_dump_pre($_POST, '$_POST');
 
-    // CANCEL -> goto deco, init $_SESSION
+    // CANCEL -> goto deconnexion.php, -> init $_SESSION
     if (isset($_POST['cancel'])) {
         header('Location: deconnexion.php');
     }
@@ -17,7 +15,6 @@
     if (isset($_POST['submit']))  {
         // NO LOGIN
         if (empty($_POST['login'])) {
-            // if (verifyLength($_POST['login'], $maxLength))
             $_SESSION['error'] = 'Vous devez choisir un login.';
             header('Location: inscription.php');
             return;
@@ -82,7 +79,6 @@
         }
     }
     $title = 'Inscription';
-    // $visible = true;
 ?>
 
 <!DOCTYPE html>

@@ -5,18 +5,15 @@
     require_once('functions/functions.php');
 
     if (isset($_POST['cancel'])) {
-        // Redirect the browser to index.php
-        header("Location: index.php");
+        // Redirect the browser to deconnexion.php
+        header("Location: deconnexion.php");
         return;
     }
     // DEBUG
-    print_r_pre($_POST, '$_POST');
+    // print_r_pre($_POST, '$_POST');
 
     // FORM POST SEND
     if (isset($_POST['submit'])) {
-        // DEBUG
-        // print_r_pre($_POST, '$_POST');
-
         if (empty($_POST['login'])) {
             // if (verifyLength($_POST['login'], $maxLength))
             $_SESSION['error'] = 'Vous devez rentrer votre login pour vous connecter.';
@@ -48,11 +45,13 @@
                 return;
             }
             else { 
+                // NOT THE SAME PASSWORD
                 if (!password_verify($_POST['password'], $row['password'])) {
                     $_SESSION['error'] = 'Votre mot de passe n\'est pas similaire à celui enregistré lors de votre inscription.';
                     header('Location: connexion.php');
                     return;
                 }
+                // OK
                 // faire le tour des infos de l'utilisateur dans la DB et les copier dans $_SESSION
                 foreach($row as $k => $v) {
                     $_SESSION[$k] = $v;
@@ -69,13 +68,12 @@
         }
     }
     // DEBUG
-    if (isset($_SESSION))
-        print_r_pre($_SESSION, '$_SESSION');
-    if (isset($row))
-        print_r_pre($row, '$row');
-
+    // if (isset($_SESSION))
+    //     print_r_pre($_SESSION, '$_SESSION');
+    // if (isset($row))
+    //     print_r_pre($row, '$row');
+    // $visible = true;
     $title = 'Connexion';
-    $visible = true;
 ?>
 
 <!DOCTYPE html>
@@ -92,13 +90,11 @@
                 {
                     echo '<p class="success">' . $_SESSION['success'] . '</p>';
                     unset($_SESSION['success']);
-                    // echo '<p>Retourner sur <a href="connexion.php">connexion</a></p>';
                 }
                 if ( isset($_SESSION['error']) ) 
                 {
                     echo '<p class="error">' . $_SESSION['error'] . '</p>';
                     unset($_SESSION['error']);
-                    // echo '<p>Retourner sur <a href="connexion.php">connexion</a></p>';
                 }
             ?>
                     <p>Pour vous connecter, il vous suffit de rentrer votre identifiant et votre mot de passe:</p>
