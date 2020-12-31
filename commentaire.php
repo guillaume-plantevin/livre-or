@@ -29,10 +29,10 @@
             $stmt->execute([
                 ':commentaire' => htmlentities($_POST['comm']), 
                 ':id_utilisateur' => $_SESSION['id'],
-                ':date' => //TODO
+                ':date' => $timestamp = date('y-m-d H:i:s')
             ]);
 
-            $_SESSION['success'] = 'Votre a été rajouté avec succès!';
+            $_SESSION['success'] = 'Votre commentaire a été rajouté avec succès!';
             header('Location: commentaire.php');
             return;
         }
