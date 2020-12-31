@@ -19,7 +19,21 @@
         -mettre dans la première ligne la date et l'auteur
             -> FAIRE UN JOIN TABLES pour récupérer le nom de l'auteur du post
             
-    /*
+    */
+    // $stmt = "SELECT * FROM commentaires JOIN utilisateurs WHERE utilisateurs.id = commentaires.id_utilisateur ORDER BY DATE DESC";
+    $stmt = "SELECT `commentaire`, `id_utilisateur`, `date` 
+            FROM `commentaires` JOIN `utilisateurs` 
+            WHERE utilisateurs.id = commentaires.id_utilisateur ORDER BY DATE DESC";
+    if ( $result = $pdo->query($stmt) ) {
+
+        echo 'ok';
+        $rows = $result->fetchAll(PDO::FETCH_ASSOC);
+        print_r_pre($rows, '$rows');
+    }
+    else {
+        echo 'error';
+    }
+
 ?>
 
 <!DOCTYPE html>
