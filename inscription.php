@@ -4,12 +4,9 @@
     require_once('pdo.php');
     require_once('functions/functions.php');
 
-    // $maxLength = 255;
+    $title = 'Inscription';
 
-    // DEBUG
-    var_dump_pre($_POST, '$_POST');
-
-    // CANCEL -> goto deco, init $_SESSION
+    // CANCEL -> goto deconnexion.php, -> init $_SESSION
     if (isset($_POST['cancel'])) {
         header('Location: deconnexion.php');
     }
@@ -17,7 +14,6 @@
     if (isset($_POST['submit']))  {
         // NO LOGIN
         if (empty($_POST['login'])) {
-            // if (verifyLength($_POST['login'], $maxLength))
             $_SESSION['error'] = 'Vous devez choisir un login.';
             header('Location: inscription.php');
             return;
@@ -40,51 +36,57 @@
             header('Location: inscription.php');
             return;
         }
-        // EVERYTHING'S  OK
+        // EVERYTHING'S  OK, CONTINUE
         else {
-            $qry = "SELECT * FROM utilisateurs WHERE login = :login";
-            // DEBUG query
-            echo "<p>$qry</p>";
+            $loginLength = strlen($_POST['login']);
+			$passwordLength = strlen($_POST['password']);
 
-            $stmt = $pdo->prepare($qry);
-            $stmt->execute( array( ':login' => htmlentities( $_POST['login'] ) ) );
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            // DEBUG
-            print_r_pre($row, '$row');
-
-            // LOGIN ALREADY EXISTS
-            if (!empty($row)) {
-                $_SESSION['error'] = 'Votre login est déjà utilisé, Veuillez en choisir un autre.';
-                header('Location: inscription.php');
-                return;
+			// LOGIN TOO LONG
+			if ($loginLength > 255) {
+				$_SESSION['error'] = "Votre login est trop long: Veuillez en choisir un plus court.";
+				header('location: inscription.php');
+               	return;
+			}
+			// PASSWORD TOO LONG
+			elseif ($passwordLength > 255) {
+				$_SESSION['error'] = "Votre mot de passe est trop long: Veuillez en choisir un plus court.";
+				header('location: inscription.php');
+               	return;
             }
-            // INSERT INTO DB
             else {
-                $rgt = "INSERT INTO utilisateurs (login, password) VALUES (:login, :password)";
-                
-                // DEBUG
-                echo "<pre>\n" . $rgt . "</pre>";
+                $qry = "SELECT * FROM utilisateurs WHERE login = :login";
     
-                // sanitizing input query
-                $stmt = $pdo->prepare($rgt);
+                $stmt = $pdo->prepare($qry);
+                $stmt->execute( array( ':login' => htmlentities( $_POST['login'] ) ) );
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
-                $stmt->execute([
-                    ':login' => htmlentities($_POST['login']), 
-                    ':password' => password_hash( htmlentities( $_POST['password']), PASSWORD_DEFAULT)
-                ]);
-
-                $_SESSION['success'] = 'Votre profil a été créé avec succès!';
-                // GOTO
-                header('Location: connexion.php');
-                return;
+                // LOGIN ALREADY EXISTS
+                if (!empty($row)) {
+                    $_SESSION['error'] = 'Votre login est déjà utilisé, Veuillez en choisir un autre.';
+                    header('Location: inscription.php');
+                    return;
+                }
+                // INSERT INTO DB
+                else {
+                    $rgt = "INSERT INTO utilisateurs (login, password) VALUES (:login, :password)";
+                    
+                    // sanitizing input query
+                    $stmt = $pdo->prepare($rgt);
+        
+                    $stmt->execute([
+                        ':login' => htmlentities($_POST['login']), 
+                        ':password' => password_hash( htmlentities( $_POST['password']), PASSWORD_DEFAULT)
+                    ]);
+    
+                    $_SESSION['success'] = 'Votre profil a été créé avec succès!';
+                    // GOTO
+                    header('Location: connexion.php');
+                    return;
+                }
             }
         }
     }
-    $title = 'Inscription';
-    // $visible = true;
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
     <?php require_once('templates/head.php');?>
@@ -115,14 +117,6 @@
                 <input type="submit" id="submitButton" name="submit" value="Inscription" />
                 <input type='submit' name='cancel' value='annuler' />
             </form>
-            <?php 
-                // DEBUG
-                if (isset($rows))
-                    print_r_pre($rows, 'in DB: users');
-                if ($_SESSION)
-                    print_r_pre($_SESSION, '$_SESSION:<br>');
-            ?>
-
         </main>
         <?php require_once('templates/footer.php');?>
     </body>
