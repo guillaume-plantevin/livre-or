@@ -47,7 +47,6 @@
         }
     }
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
     <?php require_once('templates/head.php');?>
@@ -59,7 +58,6 @@
             <h1>Commentaires</h1>
             <p>Si vous voulez rajouter un commentaire, si vous suffit de l'écrire et de le valider:</p>
             <p class="note">Note: vous pouvez en rajouter autant que vous le souhaitez.</p>
-
             <?php 
                 if (isset($_SESSION['error'])) {
                     echo '<p class="error">' . $_SESSION['error'] . '</p>';
@@ -69,7 +67,6 @@
                 {
                     echo '<p class="success">' . $_SESSION['success'] . '</p>';
                     unset($_SESSION['success']);
-                    // echo '<p>Retourner sur <a href="connexion.php">connexion</a></p>';
                 }
             ?>
             <form action="" method="POST">
@@ -78,8 +75,6 @@
                 <br />
                 <input class='button' type="submit" name='submit' value="enregistrer">
             </form>
-
-
         </main>
         <?php require_once('templates/footer.php');?>
     </body>
