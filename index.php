@@ -1,5 +1,7 @@
 <?php
-    // require_once('functions/functions.php');
+    session_start();
+    require_once('functions/functions.php');
+
     $title = 'Livre d\'Or: Acceuil';
 ?>
 <!-- ===============  VIEW  ================== -->
