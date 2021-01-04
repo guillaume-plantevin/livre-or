@@ -6,8 +6,17 @@
 
     $title = 'Commentaire';
 
+    // DEBUG
     print_r_pre($_SESSION, '$_SESSION:');
     print_r_pre($_POST, '$_POST:');
+
+    if (! isset($_SESSION['logged'])) {
+		$_SESSION['error'] = 'Le fil de discussion n\'est visible que par les utilisateurs qui sont connectés.';
+		header('Location: connexion.php');
+		return;
+	}
+
+
     if (isset($_POST['submit'])) {
         if (empty($_POST['comm'])) {
             $_SESSION['error'] = 'Vous ne pouvez pas sauvegarder un commentaire vide.';
@@ -37,20 +46,6 @@
             return;
         }
     }
-    /*
-        PSEUDO-CODE:
-        si le texte est vide
-            l'utilisateur ne peut pas sauvegarder le commentaire
-            lui envoyer un message lui disant qu'il ne pouvait pas laisser un commentaire vide
-        sinon
-            nettoyer le message - si besoin est
-            faire une insertion dans table commentaires
-            avec les $_SESSION POUR utiliser l'id de l'utilisateur
-            faire une requete avec pdo et preparation de la requete
-            envoyer
-            mettre un message $_SESSION['success'] pour informer l'utilisateur que son message a été enregistré.
-    */
-    // $_SESSION['error'] = 'Vous devez etre connecter pour pouvoir rajouter un commentaire'
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +65,7 @@
                     echo '<p class="error">' . $_SESSION['error'] . '</p>';
                     unset($_SESSION['error']);
                 }
-                elseif ( isset($_SESSION['success']) ) 
+                elseif (isset($_SESSION['success']) ) 
                 {
                     echo '<p class="success">' . $_SESSION['success'] . '</p>';
                     unset($_SESSION['success']);
