@@ -27,14 +27,10 @@
             $sql = "INSERT INTO commentaires 
                     (commentaire, id_utilisateur, date) 
                     VALUES 
-                    (:commentaire, :id_utilisateur, :date)";
-            var_dump_pre($sql, '$sql');
-    
+                    (:commentaire, :id_utilisateur, :date)";    
             // sanitizing input query
             $stmt = $pdo->prepare($sql);
 
-
-            // PAS FINI!!!!
             $stmt->execute([
                 ':commentaire' => htmlentities($_POST['comm']), 
                 ':id_utilisateur' => $_SESSION['id'],
