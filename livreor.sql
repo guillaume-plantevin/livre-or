@@ -68,6 +68,7 @@ INSERT INTO `utilisateurs` (`id`, `login`, `password`) VALUES
 (27, 'tata', '$2y$10$m.fG5c1HGpsQY9LwXzJVVutKMBsdwZkVs5qbDvxZZ48.CHTSEArj2'),
 (28, 'joe', '$2y$10$4abeQ4dVz2msU0txbQ7mB.a0QNd7qxj.UI9GJqpTM0JbETy53qfZW');
 
+
 --
 -- Indexes for dumped tables
 --
@@ -100,6 +101,7 @@ ALTER TABLE `commentaires`
 --
 ALTER TABLE `utilisateurs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
 
 --
 -- Constraints for dumped tables
