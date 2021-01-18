@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jan 04, 2021 at 03:03 PM
+-- Generation Time: Jan 18, 2021 at 05:42 PM
 -- Server version: 5.7.30
 -- PHP Version: 7.4.9
 
@@ -61,8 +61,13 @@ INSERT INTO `utilisateurs` (`id`, `login`, `password`) VALUES
 (20, 'johndoe', '$2y$10$0wQjCs5UMT/cOih915I3M.Ng9TbLKdoCJYkTn8gRAOuAx.18pnwZ.'),
 (21, 'johncage', '$2y$10$sbS1Vm1qnGOuT4qMIkPbN.bg2mLXe2MavrVfmQxtuONfP6KKaMbru'),
 (22, 'johnrambo', '$2y$10$2yMQO/3RUKhAlL8sBLNF1exsvwc4yqJ6lRLiaMqVDr.05T/WIHc3a'),
-(23, 'stockhausen', '$2y$10$8JZShcR.V9LYZrze8rLp/upGRQdW88Aobge8CL123JonKNDFRZM/K'),
-(24, 'boulez', '$2y$10$dJJGH7uIvOVVT/iQvmeT.uZLkXMiPkD8UmzFVKZv4mzZnfKD1DwlS');
+(23, 'stockhausen', '$2y$10$TtRShtAoFCogoeRyPD/xNeO1bSzW6ajOepKPfuY0zLEf1h4NwNGNy'),
+(24, 'boulez', '$2y$10$dJJGH7uIvOVVT/iQvmeT.uZLkXMiPkD8UmzFVKZv4mzZnfKD1DwlS'),
+(25, 'g1', '$2y$10$BKF1lAXBu3OKP1RO4.iUcemX1k1rMCfjFC7rats3nJLh5ymzFa58C'),
+(26, 'g2', '$2y$10$uQ33Ug/lbRHkD/iac307suW3yGlR6HB0r5ykM0oCcYkxISDBuhzW6'),
+(27, 'tata', '$2y$10$m.fG5c1HGpsQY9LwXzJVVutKMBsdwZkVs5qbDvxZZ48.CHTSEArj2'),
+(28, 'joe', '$2y$10$4abeQ4dVz2msU0txbQ7mB.a0QNd7qxj.UI9GJqpTM0JbETy53qfZW');
+
 
 --
 -- Indexes for dumped tables
@@ -95,7 +100,8 @@ ALTER TABLE `commentaires`
 -- AUTO_INCREMENT for table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
 
 --
 -- Constraints for dumped tables

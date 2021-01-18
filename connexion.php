@@ -26,8 +26,9 @@
             header('Location: connexion.php');
             return;
         }
-        // OK, CONTINUE -> ASK DB
+        // OK, CONTINUE -> VERIFY IF USER EXISTS
         if ( isset($_POST['login']) && isset($_POST['password']) ) {
+
             $sql = "SELECT * FROM utilisateurs WHERE login = :login";
 
             $stmt = $pdo->prepare($sql);
@@ -58,7 +59,6 @@
                     $_SESSION['logged'] = TRUE;
                     // CHARGING PASSWORD, NOT THE HASH
                     $_SESSION['password'] = htmlentities($_POST['password']);
-    
                     // GOTO
                     header('location: profil.php');
                     return;
@@ -78,28 +78,26 @@
         <main class='container'>
             <h1>Connexion</h1>
             <?php 
-                if ( isset($_SESSION['error']) ) 
-                {
+                if ( isset($_SESSION['error']) ) {
                     echo '<p class="error">' . $_SESSION['error'] . '</p>';
                     unset($_SESSION['error']);
                 }
-                elseif ( isset($_SESSION['success']) ) 
-                {
+                elseif ( isset($_SESSION['success']) ) {
                     echo '<p class="success">' . $_SESSION['success'] . '</p>';
                     unset($_SESSION['success']);
                 }
             ?>
-                    <p>Pour vous connecter, il vous suffit de rentrer votre identifiant et votre mot de passe:</p>
-                    <form action="" method="post">
-                        <label for="login">Login:</label>
-                        <input type="text" name="login" id="login" /><br />
-                        
-                        <label for="password">Mot de passe:</label>
-                        <input type="password" name="password" id="password" /><br />
+            <p>Pour vous connecter, il vous suffit de rentrer votre identifiant et votre mot de passe:</p>
+            <form action="" method="post">
+                <label for="login">Login:</label>
+                <input type="text" name="login" id="login" /><br />
+                
+                <label for="password">Mot de passe:</label>
+                <input type="password" name="password" id="password" /><br />
 
-                        <input type="submit" id="submitButton" name="submit" value="Valider" />
-                        <input type='submit' name='cancel' value='annuler' />
-                    </form>
+                <input type="submit" id="submitButton" name="submit" value="Valider" />
+                <input type='submit' name='cancel' value='annuler' />
+            </form>
         </main>
         <?php require_once('templates/footer.php');?>
     </body>

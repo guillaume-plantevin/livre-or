@@ -4,7 +4,6 @@
 
     $title = 'Livre d\'Or: Acceuil';
 ?>
-<!-- ===============  VIEW  ================== -->
 <!DOCTYPE html>
 <html lang="fr">
     <?php require_once('templates/head.php');?>
@@ -12,7 +11,7 @@
         <header>
             <?php require_once('templates/nav-bar.php');?>
         </header>
-        <main class='container' id=indexMain>
+        <main class='container-fluid' id=indexMain>
             <h1>Livre d'or du mariage de Sarah & Mathias:<br />
                 Bienvenue!
             </h1>

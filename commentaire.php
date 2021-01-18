@@ -6,9 +6,9 @@
 
     $title = 'Commentaire';
 
-    // DEBUG
-    print_r_pre($_SESSION, '$_SESSION:');
-    print_r_pre($_POST, '$_POST:');
+    // // DEBUG
+    // print_r_pre($_SESSION, '$_SESSION:');
+    // print_r_pre($_POST, '$_POST:');
 
     if (! isset($_SESSION['logged'])) {
 		$_SESSION['error'] = 'Le fil de discussion n\'est visible que par les utilisateurs qui sont connectés.';
@@ -27,8 +27,8 @@
             $sql = "INSERT INTO commentaires 
                     (commentaire, id_utilisateur, date) 
                     VALUES 
-                    (:commentaire, :id_utilisateur, :date)";    
-            // sanitizing input query
+                    (:commentaire, :id_utilisateur, :date)";   
+            
             $stmt = $pdo->prepare($sql);
 
             $stmt->execute([
