@@ -21,15 +21,27 @@
     if (isset($_POST['submit'])) {
         // BLANK LOGIN
         if (empty($_POST['login'])) {
-			$_SESSION['error'] = 'Vous ne pouvez pas utiliser un login vide.';
-			header("Location: profil.php");
-			return;
-		}
-		// BLANK PASSWORD
-		elseif (empty($_POST['password'])) {
-			$_SESSION['error'] = 'Vous ne pouvez pas utiliser un mot de passe vide.';
-			header("Location: profil.php");
-			return;
+            $_SESSION['error'] = 'Vous ne pouvez pas utiliser un login vide.';
+            header("Location: profil.php");
+            return;
+        }
+        // BLANK PASSWORD
+        elseif (empty($_POST['password'])) {
+            $_SESSION['error'] = 'Vous ne pouvez pas utiliser un mot de passe vide.';
+            header("Location: profil.php");
+            return;
+        }
+        // TOO LONG LOGIN
+        elseif (strlen(($_POST['login'])) > 255) {
+            $_SESSION['error'] = 'Votre nouveau login est trop long. Veuillez en choisir un plus court';
+            header("Location: profil.php");
+            return;
+        }
+        // TOO LONG PASSWORD
+        elseif (strlen(($_POST['password'])) > 255) {
+            $_SESSION['error'] = 'Votre nouveau mot de passe est trop long. Veuillez en choisir un plus court';
+            header("Location: profil.php");
+            return;
         }
         // OK, CONTINUE
         else {
@@ -39,39 +51,36 @@
                 $stmt = $pdo->prepare($verify);
                 $stmt->execute([':login' => htmlentities($_POST['login'])]);
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    
                 // ALREADY EXISTS -> STOP
                 if (!empty($row)) {
-
                     if ($_SESSION['id'] !== $row['id']) {
                         $_SESSION['error'] = 'Votre nouveau login est déjà utilisée, veuillez en choisir un autre.';
                         header('Location: profil.php');
                         return;
                     }
                 }
-                // OK => UPDATE PROFIL
-                else {
-                    $sql = "UPDATE utilisateurs 
-                    SET login = :log, password = :pw 
-                    WHERE id = :id";
-    
-                    $stmt = $pdo->prepare($sql);
-    
-                    $stmt->execute([
-                        ':log' => htmlentities($_POST['login']), 
-                        ':pw' => password_hash( htmlentities($_POST['password']), PASSWORD_DEFAULT),
-                        ':id' => $_SESSION['id']
-                    ]);
-    
-                    // CHARGE INPUTS IN $_SESSION
-                    $_SESSION['login'] = htmlentities($_POST['login']);
-                    $_SESSION['password'] = htmlentities($_POST['password']);
-                    $_SESSION['logged'] = TRUE;
-                    $_SESSION['success'] = 'Votre profil a bien été mis à jour!';
-    
-                    header('location: profil.php');
-                    return;
-                }
+            }
+            // OK => UPDATE PROFIL
+            else {
+                $sql = "UPDATE utilisateurs 
+                        SET login = :log, password = :pw 
+                        WHERE id = :id";
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([
+                    ':log' => htmlentities($_POST['login']), 
+                    ':pw' => password_hash(htmlentities($_POST['password']), PASSWORD_DEFAULT),
+                    ':id' => $_SESSION['id']
+                ]);
+
+                // CHARGE INPUTS IN $_SESSION
+                $_SESSION['login'] = htmlentities($_POST['login']);
+                $_SESSION['password'] = htmlentities($_POST['password']);
+                $_SESSION['logged'] = TRUE;
+                $_SESSION['success'] = 'Votre profil a bien été mis à jour!';
+
+                header('location: profil.php');
+                return;
             }
         }
     }

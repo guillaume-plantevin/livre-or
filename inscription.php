@@ -36,54 +36,48 @@
             header('Location: inscription.php');
             return;
         }
+        // TOO LONG LOGIN
+        elseif (strlen(($_POST['login'])) > 255) {
+            $_SESSION['error'] = 'Votre login est trop long. Veuillez en choisir un plus court';
+            header("Location: profil.php");
+            return;
+        }
+        // TOO LONG PASSWORD
+        elseif (strlen(($_POST['password'])) > 255) {
+            $_SESSION['error'] = 'Votre mot de passe est trop long. Veuillez en choisir un plus court';
+            header("Location: profil.php");
+            return;
+        }
         // EVERYTHING'S  OK, CONTINUE
         else {
-            $loginLength = strlen($_POST['login']);
-			$passwordLength = strlen($_POST['password']);
+            $qry = "SELECT * FROM utilisateurs WHERE login = :login";
 
-			// LOGIN TOO LONG
-			if ($loginLength > 255) {
-				$_SESSION['error'] = "Votre login est trop long: Veuillez en choisir un plus court.";
-				header('location: inscription.php');
-               	return;
-			}
-			// PASSWORD TOO LONG
-			elseif ($passwordLength > 255) {
-				$_SESSION['error'] = "Votre mot de passe est trop long: Veuillez en choisir un plus court.";
-				header('location: inscription.php');
-               	return;
+            $stmt = $pdo->prepare($qry);
+            $stmt->execute( array( ':login' => htmlentities( $_POST['login'] ) ) );
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // LOGIN ALREADY EXISTS IN DB
+            if (!empty($row)) {
+                $_SESSION['error'] = 'Votre login est déjà utilisé, Veuillez en choisir un autre.';
+                header('Location: inscription.php');
+                return;
             }
+            // INSERT INTO DB
             else {
-                $qry = "SELECT * FROM utilisateurs WHERE login = :login";
+                $rgt = "INSERT INTO utilisateurs (login, password) VALUES (:login, :password)";
+                
+                // sanitizing input query
+                $stmt = $pdo->prepare($rgt);
     
-                $stmt = $pdo->prepare($qry);
-                $stmt->execute( array( ':login' => htmlentities( $_POST['login'] ) ) );
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-                // LOGIN ALREADY EXISTS
-                if (!empty($row)) {
-                    $_SESSION['error'] = 'Votre login est déjà utilisé, Veuillez en choisir un autre.';
-                    header('Location: inscription.php');
-                    return;
-                }
-                // INSERT INTO DB
-                else {
-                    $rgt = "INSERT INTO utilisateurs (login, password) VALUES (:login, :password)";
-                    
-                    // sanitizing input query
-                    $stmt = $pdo->prepare($rgt);
-        
-                    $stmt->execute([
-                        ':login' => htmlentities($_POST['login']), 
-                        ':password' => password_hash( htmlentities( $_POST['password']), PASSWORD_DEFAULT)
-                    ]);
-    
-                    $_SESSION['success'] = 'Votre profil a été créé avec succès!';
-                    // GOTO
-                    header('Location: connexion.php');
-                    return;
-                }
-            }
+                $stmt->execute([
+                    ':login' => htmlentities($_POST['login']), 
+                    ':password' => password_hash( htmlentities( $_POST['password']), PASSWORD_DEFAULT)
+                ]);
+
+                $_SESSION['success'] = 'Votre profil a été créé avec succès!';
+                header('Location: connexion.php');
+                return;
+            }   
         }
     }
 ?>
